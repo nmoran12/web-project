@@ -114,11 +114,28 @@
     reader.onload = () => (avatarUrl.value = reader.result)
     reader.readAsDataURL(file)
   }
-  
-  function saveChanges() {
-    // emit or call API
-    console.log('saving', form)
+
+ const userId = 1;  // manually set user ID for now
+
+async function saveChanges() {
+  try {
+    const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Profile updated', data);
+    } else {
+      console.error('Error updating profile', data);
+    }
+  } catch (err) {
+    console.error('Network error:', err);
   }
+}
+
   function goBack() {
     // router.back() or similar
     console.log('go home')
